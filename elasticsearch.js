@@ -2,8 +2,8 @@ const elasticsearch = require('elasticsearch');
 const HOST = 'http://localhost:9200';
 
 const client = elasticsearch.Client({
-  host: HOST,
-  log: 'debug'
+  host: HOST
+  //log: 'info'
 });
 
 const INDEX_NAME = 'people';

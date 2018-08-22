@@ -7,37 +7,32 @@ router.get('/contact/:name', (req, res) => {
   elasticsearch
     .getContact(req.params.name)
     .then((result) => {
-      console.log('Searching for person with name: ' + req.params.name);
-
       if (result.hits.hits.length === 0) {
         throw 'Contact does not exist';
       } else {
         res.status(200).send(result);
       }
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.status(500).send(error));
 });
 
 router.get('/contact', (req, res) => {
   elasticsearch
     .getAllContacts()
     .then((result) => {
-      console.log(result);
       res.status(200).send(
         result.hits.hits.map((hit) => {
           return hit._source;
         })
       );
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.status(500).send(error));
 });
 
 router.post('/contact', (req, res) => {
   elasticsearch
     .newContact(req.body.name, req.body.address)
     .then((result) => {
-      console.log('Adding person with name: ' + req.body.name);
-      console.log(result);
       if (result.result === 'created') {
         res.send(
           'New contact created: \n' +
@@ -49,7 +44,7 @@ router.post('/contact', (req, res) => {
         );
       }
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.status(500).send(error));
 });
 
 router.put('/contact/:name', (req, res) => {
@@ -75,7 +70,7 @@ router.put('/contact/:name', (req, res) => {
         throw `Something went wrong during updating where total number of results didn't match total number of updates.`;
       }
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.status(500).send(error));
 });
 
 router.delete('/contact/:name', (req, res) => {
@@ -94,7 +89,7 @@ router.delete('/contact/:name', (req, res) => {
         throw `Something went wrong during deletion where total number of results didn't match total number of deletions.`;
       }
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.status(500).send(error));
 });
 
 module.exports = router;
